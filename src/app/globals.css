@@ -1,22 +1,199 @@
 @import "tailwindcss";
 
+/* Improvments : 
+  1) Use Terrazzo or Style Dictionary to manage tokens if we have mobile IOS / Android applications to share tokens with others stack.
+  2) create a utility tools for get tokens dynamicly from providers (Figma)
+*/
+
+/* Tailwind utility for apply dark / light mode */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* When user has light mode on his OS, we use light colors */
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0f172a;
+
+  --color-primary: #0b5fff;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #e6f0ff;
+  --color-on-primary-container: #0b2e6f;
+
+  --color-secondary: #00d98b;
+  --color-on-secondary: #003320;
+  --color-secondary-container: #d9fff1;
+  --color-on-secondary-container: #004d2b;
+
+  --color-success: #22c55e;
+  --color-on-success: #ffffff;
+  --color-success-container: #dcfce7;
+  --color-on-success-container: #14532d;
+
+  --color-error: #ef4444;
+  --color-on-error: #450a0a;
+  --color-error-container: #fee2e2;
+  --color-on-error-container: #7f1d1d;
+
+  --color-warning: #f59e0b;
+  --color-on-warning: #1f1600;
+  --color-warning-container: #fef3c7;
+  --color-on-warning-container: #3f2d00;
+
+  --color-info: #3b82f6;
+  --color-on-info: #0b1c48;
+  --color-info-container: #dbeafe;
+  --color-on-info-container: #1e3a8a;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
+/*
+  When user has dark mode on his OS, we use dark colors 
+  Why i do that ? 
+  2 reasons, the first is CSS / native way to manage color mode is better for performance and UX.
+  When user change his OS mode, the application colors change too without any JS.
+*/
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0b0f1a;
+    --foreground: #e5e7eb;
+
+    --color-primary: #66a3ff;
+    --color-on-primary: #0a1220;
+    --color-primary-container: #102b5a;
+    --color-on-primary-container: #dde3ff;
+
+    --color-secondary: #34f1b5;
+    --color-on-secondary: #003320;
+    --color-secondary-container: #003d2d;
+    --color-on-secondary-container: #cffaef;
+
+    --color-success: #34d399;
+    --color-on-success: #06261a;
+    --color-success-container: #064e3b;
+    --color-on-success-container: #cffcef;
+
+    --color-error: #f87171;
+    --color-on-error: #4a0000;
+    --color-error-container: #2a0000;
+    --color-on-error-container: #ffc9c9;
+
+    --color-warning: #facc15;
+    --color-on-warning: #3a2e00;
+    --color-warning-container: #3f2d00;
+    --color-on-warning-container: #fef08a;
+
+    --color-info: #93c5fd;
+    --color-on-info: #0b1c48;
+    --color-info-container: #1e3a8a;
+    --color-on-info-container: #dbeafe;
   }
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-primary: var(--color-primary);
+  --color-on-primary: var(--color-on-primary);
+  --color-primary-container: var(--color-primary-container);
+  --color-on-primary-container: var(--color-on-primary-container);
+
+  --color-secondary: var(--color-secondary);
+  --color-on-secondary: var(--color-on-secondary);
+  --color-secondary-container: var(--color-secondary-container);
+  --color-on-secondary-container: var(--color-on-secondary-container);
+
+  --color-success: var(--color-success);
+  --color-on-success: var(--color-on-success);
+  --color-success-container: var(--color-success-container);
+  --color-on-success-container: var(--color-on-success-container);
+
+  --color-error: var(--color-error);
+  --color-on-error: var(--color-on-error);
+  --color-error-container: var(--color-error-container);
+  --color-on-error-container: var(--color-on-error-container);
+
+  --color-warning: var(--color-warning);
+  --color-on-warning: var(--color-on-warning);
+  --color-warning-container: var(--color-warning-container);
+  --color-on-warning-container: var(--color-on-warning-container);
+
+  --color-info: var(--color-info);
+  --color-on-info: var(--color-on-info);
+  --color-info-container: var(--color-info-container);
+  --color-on-info-container: var(--color-on-info-container);
+}
+
+/*
+  The second reason is with this classes, i can have an auto mode. When user change mode on our application, we had one of both of them.
+  when user click on auto mode we just delete the class which will allow us to switch back to the color mode chosen by the user's OS
+*/
+.dark {
+  --background: #0b0f1a;
+  --foreground: #e5e7eb;
+
+  --color-primary: #66a3ff;
+  --color-on-primary: #0a1220;
+  --color-primary-container: #102b5a;
+  --color-on-primary-container: #dde3ff;
+
+  --color-secondary: #34f1b5;
+  --color-on-secondary: #003320;
+  --color-secondary-container: #003d2d;
+  --color-on-secondary-container: #cffaef;
+
+  --color-success: #34d399;
+  --color-on-success: #06261a;
+  --color-success-container: #064e3b;
+  --color-on-success-container: #cffcef;
+
+  --color-error: #f87171;
+  --color-on-error: #4a0000;
+  --color-error-container: #2a0000;
+  --color-on-error-container: #ffc9c9;
+
+  --color-warning: #facc15;
+  --color-on-warning: #3a2e00;
+  --color-warning-container: #3f2d00;
+  --color-on-warning-container: #fef08a;
+
+  --color-info: #93c5fd;
+  --color-on-info: #0b1c48;
+  --color-info-container: #1e3a8a;
+  --color-on-info-container: #dbeafe;
+}
+
+.light {
+  --background: #ffffff;
+  --foreground: #0f172a;
+
+  --color-primary: #0b5fff;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #e6f0ff;
+  --color-on-primary-container: #0b2e6f;
+
+  --color-secondary: #00d98b;
+  --color-on-secondary: #003320;
+  --color-secondary-container: #d9fff1;
+  --color-on-secondary-container: #004d2b;
+
+  --color-success: #22c55e;
+  --color-on-success: #ffffff;
+  --color-success-container: #dcfce7;
+  --color-on-success-container: #14532d;
+
+  --color-error: #ef4444;
+  --color-on-error: #450a0a;
+  --color-error-container: #fee2e2;
+  --color-on-error-container: #7f1d1d;
+
+  --color-warning: #f59e0b;
+  --color-on-warning: #1f1600;
+  --color-warning-container: #fef3c7;
+  --color-on-warning-container: #3f2d00;
+
+  --color-info: #3b82f6;
+  --color-on-info: #0b1c48;
+  --color-info-container: #dbeafe;
+  --color-on-info-container: #1e3a8a;
 }
 
 body {
